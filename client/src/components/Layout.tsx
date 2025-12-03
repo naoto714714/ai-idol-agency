@@ -49,9 +49,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
                 )} />
               </Link>
             ))}
-            <Button variant="default" size="sm" className="rounded-full bg-gradient-to-r from-primary to-secondary hover:opacity-90 border-0 shadow-md">
-              Fan Club
-            </Button>
+
           </nav>
 
           {/* Mobile Menu Toggle */}
@@ -80,9 +78,6 @@ export function Layout({ children }: { children: React.ReactNode }) {
                 {item.label}
               </Link>
             ))}
-            <Button className="w-full rounded-full bg-gradient-to-r from-primary to-secondary border-0">
-              Fan Club
-            </Button>
           </div>
         )}
       </header>
