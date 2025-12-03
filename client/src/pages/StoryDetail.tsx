@@ -1,26 +1,62 @@
 import { Layout } from "@/components/Layout";
 import { Button } from "@/components/ui/button";
 import { SectionTitle } from "@/components/SectionTitle";
-import { ArrowLeft, ArrowRight, Share2, Calendar } from "lucide-react";
+import { getStory, StoryData } from "@/lib/markdown";
+import { ArrowLeft, ArrowRight, Calendar, Share2 } from "lucide-react";
+import { useEffect, useState } from "react";
 import { Link, useRoute } from "wouter";
-import { useEffect } from "react";
 
 export default function StoryDetail() {
   const [, params] = useRoute("/story/:id");
   const id = params?.id || "1";
+  const [story, setStory] = useState<StoryData | null>(null);
+  const [loading, setLoading] = useState(true);
 
-  // Scroll to top on load
   useEffect(() => {
     window.scrollTo(0, 0);
+    setLoading(true);
+    // In a real app, we would map ID to filename more robustly
+    getStory(`ep${id}.md`)
+      .then(data => {
+        setStory(data);
+        setLoading(false);
+      })
+      .catch(err => {
+        console.error(err);
+        setLoading(false);
+      });
   }, [id]);
+
+  if (loading) {
+    return (
+      <Layout>
+        <div className="min-h-screen flex items-center justify-center">
+          <div className="text-muted-foreground">Loading story...</div>
+        </div>
+      </Layout>
+    );
+  }
+
+  if (!story) {
+    return (
+      <Layout>
+        <div className="min-h-screen flex flex-col items-center justify-center gap-4">
+          <div className="text-xl font-bold">Story not found</div>
+          <Link href="/story">
+            <Button>Back to Archive</Button>
+          </Link>
+        </div>
+      </Layout>
+    );
+  }
 
   return (
     <Layout>
       {/* Story Header */}
       <div className="relative h-[60vh] min-h-[400px] w-full overflow-hidden">
         <img 
-          src="/images/story_thumb_1.png" 
-          alt="Story Header" 
+          src={story.image} 
+          alt={story.title} 
           className="w-full h-full object-cover"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-background via-background/50 to-transparent" />
@@ -34,12 +70,12 @@ export default function StoryDetail() {
             </Link>
             
             <div className="flex items-center gap-3 text-white/80 text-sm font-medium mb-4">
-              <span className="px-3 py-1 rounded-full bg-primary/80 backdrop-blur-sm text-white">Episode {id}</span>
-              <span className="flex items-center gap-1"><Calendar className="w-4 h-4" /> Year 1 / Summer</span>
+              <span className="px-3 py-1 rounded-full bg-primary/80 backdrop-blur-sm text-white">Episode {story.id}</span>
+              <span className="flex items-center gap-1"><Calendar className="w-4 h-4" /> {story.date}</span>
             </div>
             
             <h1 className="text-4xl md:text-6xl font-bold text-white mb-6 drop-shadow-lg font-sans">
-              Harmony in Discord
+              {story.title}
             </h1>
           </div>
         </div>
@@ -47,58 +83,10 @@ export default function StoryDetail() {
 
       {/* Story Content */}
       <article className="container max-w-3xl mx-auto py-16 px-6 md:px-0">
-        <div className="prose prose-lg prose-slate md:prose-xl font-serif leading-loose text-foreground/90">
-          <p className="first-letter:text-5xl first-letter:font-bold first-letter:text-primary first-letter:mr-3 first-letter:float-left">
-            スタジオの空気は、張り詰めた糸のように冷たく、鋭かった。
-          </p>
-          
-          <p>
-            鏡張りの壁に反射する照明が、3人の表情を容赦なく照らし出す。Sakuraは膝に手をついて荒い息を整え、Aoiは腕を組んで鏡の中の自分を睨みつけている。そしてLunaは、少し離れた場所で困ったように二人を交互に見つめていた。
-          </p>
-
-          <p>
-            「だから、そこのタイミングが違うって言ってるでしょ」
-          </p>
-
-          <p>
-            沈黙を破ったのはAoiだった。彼女の声には、焦りと苛立ちが滲んでいる。
-          </p>
-
-          <p>
-            「でも、AIプロデューサーの指示だと、ここはもっと感情を込めてフリーテンポ気味にって...」
-          </p>
-
-          <p>
-            「それはソロパートの話！ ユニゾンでズレたら意味ないじゃない！」
-          </p>
-
-          <div className="my-12 p-8 bg-muted/30 rounded-2xl border-l-4 border-primary italic text-muted-foreground">
-            <p className="mb-0">
-              "完璧な同期（シンクロ）だけが正解ではない。時には不協和音（ディスコード）が、新たな調和を生むこともある。"
-            </p>
-            <div className="mt-4 text-sm font-sans font-bold text-primary">— AI Producer Log #1042</div>
-          </div>
-
-          <p>
-            Sakuraは唇を噛んだ。Aoiの言うことは正しい。ダンスリーダーとしての彼女の指摘はいつだって的確だ。でも、何かが違う気がする。私たちが目指しているのは、ただ揃っただけのパフォーマンスなのだろうか？
-          </p>
-
-          <p>
-            「...ねえ、一回休憩しない？」
-          </p>
-
-          <p>
-            Lunaが恐る恐る提案する。その手には、いつの間にかスポーツドリンクのボトルが3本握られていた。
-          </p>
-          
-          <p>
-            窓の外では、夏の夕暮れが空を茜色に染め始めていた。プリズムのように複雑に屈折する光が、スタジオの床に長い影を落としている。
-          </p>
-          
-          <p>
-            私たちはまだ、本当の意味で「グループ」になれていないのかもしれない。
-          </p>
-        </div>
+        <div 
+          className="prose prose-lg prose-slate md:prose-xl font-serif leading-loose text-foreground/90 [&>p:first-of-type]:first-letter:text-5xl [&>p:first-of-type]:first-letter:font-bold [&>p:first-of-type]:first-letter:text-primary [&>p:first-of-type]:first-letter:mr-3 [&>p:first-of-type]:first-letter:float-left"
+          dangerouslySetInnerHTML={{ __html: story.htmlContent }}
+        />
 
         {/* Story Footer */}
         <div className="mt-16 pt-8 border-t border-border flex items-center justify-between">
@@ -109,7 +97,7 @@ export default function StoryDetail() {
           </div>
           <div className="flex gap-4">
             <Link href={`/story/${Number(id) - 1}`}>
-              <Button variant="ghost" disabled={id === "1"}>
+              <Button variant="ghost" disabled={Number(id) <= 1}>
                 <ArrowLeft className="mr-2 h-4 w-4" /> Previous
               </Button>
             </Link>
