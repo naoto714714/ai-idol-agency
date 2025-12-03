@@ -78,10 +78,8 @@ export default function Home() {
                 <div className="h-full bg-gradient-to-r from-primary to-secondary w-[30%] rounded-full" />
               </div>
               <div className="text-right">
-                <Link href="/story">
-                  <a className="text-xs text-muted-foreground hover:text-primary transition-colors flex items-center justify-end gap-1">
-                    View Timeline <ArrowRight className="h-3 w-3" />
-                  </a>
+                <Link href="/story" className="text-xs text-muted-foreground hover:text-primary transition-colors flex items-center justify-end gap-1">
+                  View Timeline <ArrowRight className="h-3 w-3" />
                 </Link>
               </div>
             </div>
