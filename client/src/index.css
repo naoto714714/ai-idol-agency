@@ -259,12 +259,58 @@
     .hero-ghost-button:hover {
       background-color: rgba(255, 255, 255, 0.9);
     }
+
+    .dark .hero-glass {
+      background-color: rgba(24, 26, 34, 0.7);
+      border-color: rgba(255, 255, 255, 0.12);
+      box-shadow: 0 24px 80px rgba(13, 16, 23, 0.45);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+    }
+
+    @media (max-width: 768px) {
+      .dark .hero-glass {
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+      }
+    }
+
+    .dark .hero-pill {
+      background-color: rgba(34, 38, 48, 0.8);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+    }
+
+    .dark .hero-ghost-button {
+      background-color: rgba(34, 38, 48, 0.75);
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+    }
+
+    .dark .hero-ghost-button:hover {
+      background-color: rgba(34, 38, 48, 0.85);
+    }
   }
 
   @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
     .hero-pill,
     .hero-ghost-button {
       background-color: rgba(255, 255, 255, 0.96);
+    }
+
+    .hero-glass {
+      background-color: rgba(255, 255, 255, 0.96);
+    }
+
+    .dark .hero-glass {
+      background-color: rgba(24, 26, 34, 0.94);
+      border-color: rgba(255, 255, 255, 0.12);
+      box-shadow: 0 24px 48px rgba(13, 16, 23, 0.35);
+    }
+
+    .dark .hero-pill,
+    .dark .hero-ghost-button {
+      background-color: rgba(34, 38, 48, 0.92);
     }
   }
 }
