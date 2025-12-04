@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { SectionTitle } from "@/components/SectionTitle";
 import { getAllStories, getStory, StoryData } from "@/lib/markdown";
 import { ArrowLeft, ArrowRight, Calendar, Share2 } from "lucide-react";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, useRoute } from "wouter";
 import NotFound from "./NotFound";
 
@@ -16,7 +16,7 @@ export default function StoryDetail() {
   const [availableIds, setAvailableIds] = useState<number[]>([]);
 
   const numericId = Number(id);
-  const isValidId = useMemo(() => Number.isInteger(numericId) && numericId > 0, [numericId]);
+  const isValidId = Number.isInteger(numericId) && numericId > 0;
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -68,11 +68,7 @@ export default function StoryDetail() {
     );
   }
 
-  if (!story) {
-    return <NotFound />;
-  }
-
-  if (notFound) {
+  if (!story || notFound) {
     return <NotFound />;
   }
 
