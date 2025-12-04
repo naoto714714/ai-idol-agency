@@ -1,6 +1,6 @@
+import { Link } from "wouter";
 import { Layout } from "@/components/Layout";
 import { Button } from "@/components/ui/button";
-import { Link } from "wouter";
 
 const members = [
   {

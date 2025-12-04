@@ -1,6 +1,6 @@
 import js from "@eslint/js";
+import pluginImport from "eslint-plugin-import";
 import reactHooks from "eslint-plugin-react-hooks";
-import reactRefresh from "eslint-plugin-react-refresh";
 import globals from "globals";
 import tseslint from "typescript-eslint";
 
@@ -14,12 +14,35 @@ export default tseslint.config(
   js.configs.recommended,
   ...tseslint.configs.recommended,
 
+  // 全体共通: import整理ルール
+  {
+    plugins: {
+      import: pluginImport,
+    },
+    settings: {
+      "import/resolver": {
+        typescript: {
+          project: "./tsconfig.json",
+        },
+      },
+    },
+    rules: {
+      // import文のソート
+      "import/order": [
+        "warn",
+        {
+          groups: ["builtin", "external", "internal", "parent", "sibling", "index"],
+          alphabetize: { order: "asc", caseInsensitive: true },
+        },
+      ],
+    },
+  },
+
   // React (client) 設定
   {
     files: ["client/**/*.{ts,tsx}"],
     plugins: {
       "react-hooks": reactHooks,
-      "react-refresh": reactRefresh,
     },
     languageOptions: {
       globals: {
@@ -28,12 +51,8 @@ export default tseslint.config(
     },
     rules: {
       // React Hooks: 基本ルールのみ有効化
-      // v7の新ルール（React Compiler向け）は一旦無効化
       "react-hooks/rules-of-hooks": "error",
       "react-hooks/exhaustive-deps": "warn",
-
-      // React Refresh: shadcn/ui コンポーネントとの互換性のため無効化
-      "react-refresh/only-export-components": "off",
     },
   },
 
@@ -58,4 +77,3 @@ export default tseslint.config(
     },
   },
 );
-

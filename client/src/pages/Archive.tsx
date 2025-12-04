@@ -1,6 +1,6 @@
+import { Lock } from "lucide-react";
 import { Layout } from "@/components/Layout";
 import { PrismCard } from "@/components/PrismCard";
-import { Lock } from "lucide-react";
 
 export default function Archive() {
   return (
