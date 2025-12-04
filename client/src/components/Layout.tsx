@@ -117,6 +117,11 @@ export function Layout({ children }: { children: React.ReactNode }) {
                 </Link>
               </li>
               <li>
+                <Link href="/about" className="hover:text-primary transition-colors">
+                  About Project
+                </Link>
+              </li>
+              <li>
                 <Link href="/archive" className="hover:text-primary transition-colors">
                   Archive
                 </Link>
@@ -127,11 +132,6 @@ export function Layout({ children }: { children: React.ReactNode }) {
           <div className="space-y-4">
             <h4 className="font-bold text-sm">Legal</h4>
             <ul className="space-y-2 text-sm text-muted-foreground">
-              <li>
-                <Link href="/about" className="hover:text-primary transition-colors">
-                  About Project
-                </Link>
-              </li>
               <li>
                 <a href="#" className="hover:text-primary transition-colors">
                   Terms of Service
