@@ -43,7 +43,7 @@ export async function getAllStories(): Promise<StoryData[]> {
       const stories = await Promise.all(files.map((file: string) => getStory(file)));
       return stories.sort((a, b) => b.id - a.id);
     }
-  } catch (e) {
+  } catch {
     console.warn("Manifest not found, using fallback list");
   }
 
